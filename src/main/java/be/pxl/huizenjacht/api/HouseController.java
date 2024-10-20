@@ -39,6 +39,13 @@ public class HouseController {
         houseService.updateHouseByCode(code, house);
     }
 
+    @PutMapping("/{code}/sold")
+    public void UpdateHouseStatusToSold(@PathVariable String code, @RequestBody House house) {
+        houseService.updateHouseStatusToSold(code, house);
+
+
+    }
+
     @DeleteMapping("/{code}")
     public void DeleteHouse(@PathVariable String code){
         houseService.deleteHouse(code);

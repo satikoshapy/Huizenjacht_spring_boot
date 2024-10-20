@@ -6,14 +6,30 @@ public class House {
     private String name;
     private Status status;
     private String city;
-    private double price;
+    private double squareMeters;
+    private EPCScore EPCScore;
+    private final double basePricePerSqrM = 2356.75;
 
-    public House(String code, String name, Status status, String city, double price) {
+    public House(String code, String name, double area, EPCScore score, String city) {
         this.code = code;
         this.name = name;
-        this.status = status;
+        this.squareMeters = area;
+        this.EPCScore = score;
         this.city = city;
-        this.price = price;
+        this.status = Status.FOR_SALE;
+
+    }
+
+    public double getSquareMeters() {
+        return squareMeters;
+    }
+
+    public EPCScore getEPCScore() {
+        return EPCScore;
+    }
+
+    public double getBasePricePerSqrM() {
+        return basePricePerSqrM;
     }
 
     public String getCode() {
@@ -33,18 +49,29 @@ public class House {
     }
 
     public double getPrice() {
+        double price = basePricePerSqrM * squareMeters;
+        if (city.equals("Hasselt") || city.equals("Genk")){
+            return price * 1.25;
+        }
         return price;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setSquareMeters(double squareMeters) {
+        if (squareMeters >= 50){
+            this.squareMeters = squareMeters;
+        }
+
+    }
+
+    public void setEPCScore(be.pxl.huizenjacht.EPCScore EPCScore) {
+        this.EPCScore = EPCScore;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setStatus(Status status) {
+    private void setStatus(Status status) {
         this.status = status;
     }
 
@@ -52,8 +79,13 @@ public class House {
         this.city = city;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void markAsSold() throws IllegalAccessException {
+        if (getStatus() == Status.FOR_SALE){
+            setStatus(Status.SOLD);
+        }
+        else {
+            throw new IllegalAccessException("the house is already sold");
+        }
     }
 
 
@@ -65,7 +97,6 @@ public class House {
                 ", status='" + status + '\'' +
                 ", name='" + name +'\'' +
                 ", city='" +city + '\'' +
-                ", price=" + price +
                 '}';
     }
 }

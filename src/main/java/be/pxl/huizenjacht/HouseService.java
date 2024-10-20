@@ -44,6 +44,24 @@ public class HouseService {
 
     }
 
+    public void updateHouseStatusToSold(String code, House house) throws IllegalAccessError {
+
+        House houseByCode = hashedHouses.get(code);
+        if (houseByCode != null){
+            int houseIndex = houses.indexOf(houseByCode);
+            try {
+                house.markAsSold();
+                houses.set(houseIndex, house);
+
+            } catch (IllegalAccessException e) {
+                System.out.println(e.getMessage()  );;
+            }
+
+
+        }
+
+    }
+
     public void deleteHouse(String code){
         for (House house : houses) {
             if (house.getCode().equals(code)) {
